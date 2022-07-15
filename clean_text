@@ -1,0 +1,21 @@
+def clean_text(filename):
+   import re
+   import nltk
+
+   with open(filename, 'r') as f:
+       text = f.read()
+       
+   sentence_list = nltk.sent_tokenize(text)
+   
+   for i in range(0, len(sentence_list)):
+       sentence_list[i] = sentence_list[i].strip()
+       sentences = re.sub("@\S+", "", sentences)
+       sentence_list[i] = re.sub("#", "", sentence_list[i])
+       sentence_list[i] = re.sub("\n", "", sentence_list[i])
+       sentence_list[i] = re.sub("-", "", sentence_list[i])
+       sentence_list[i] = re.sub("[\(\[].*?[\)\]]", "", sentence_list[i])
+       if sentence_list[i].find(' ') == -1:
+           sentence_list[i] = None
+   sentence_list = [i for i in sentence_list if i]
+   
+   return sentence_list
