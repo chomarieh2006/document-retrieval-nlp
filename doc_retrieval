@@ -10,35 +10,43 @@ from tabulate import tabulate # print 2d array
 query = []
 query.append(input("Search: "))
 
+def clean_text(filename):
+    import spacy
+    import re
+
+    nlp = spacy.load("en_core_web_sm")
+    with open(filename, 'r') as f:
+        text = f.read()
+
+    doc = nlp(text)
+    sentence_list = []
+    for sent in doc.sents:
+        if sent[0].is_title and sent[-1].is_punct:
+            has_noun = 2
+            has_verb = 1
+            for token in sent:
+                if token.pos_ in ["NOUN", "PROPN", "PRON"]:
+                    has_noun -= 1
+                elif token.pos_ == "VERB":
+                    has_verb -= 1
+            if has_noun < 1 and has_verb < 1:
+                sentence_list.append(sent.text)
+
+    for i in range(0, len(sentence_list)):
+        sentence_list[i] = re.sub("\n", "", sentence_list[i])
+
+    return sentence_list
+
 # create class for dataset
 class my_dataset(torch.utils.data.Dataset):
     def __init__(self, filename):
-
-        # clean text files
-        def clean_text(filename):
-            import re  # substitution
-            import nltk  # natural language tool kit
-
-            with open(filename, 'r') as f:
-                text = f.read()
-            sentence_list = nltk.sent_tokenize(text)  # make sentences
-
-            for i in range(0, len(sentence_list)):
-                sentence_list[i] = sentence_list[i].strip()  # get rid of unncessary spaces
-                # get rid of unnecessary chars
-                sentence_list[i] = re.sub("@\S+", "", sentence_list[i])
-                sentence_list[i] = re.sub("#", "", sentence_list[i])
-                sentence_list[i] = re.sub("\n", " ", sentence_list[i])
-                sentence_list[i] = re.sub("-", "", sentence_list[i])
-                sentence_list[i] = re.sub("[\(\[].*?[\)\]]", "", sentence_list[i])
-                
-                if sentence_list[i].find(' ') == -1:  # get rid of one word sentences/symbols
-                    sentence_list[i] = None
-            sentence_list = [i for i in sentence_list if i]
-            
-            return sentence_list
-
         self.sentences = clean_text(filename)
+        new_filename = filename.split("/")
+        new_filename = new_filename[-1]
+        new_filename = "/home/marie/Downloads/sample_txt_pgs_clean" + f"/{new_filename}"
+        with open(new_filename, 'w') as f:
+            for sentence in self.sentences:
+                f.writelines(sentence + "\n")
 
     def __len__(self):
         return len(self.sentences)
@@ -96,8 +104,8 @@ for file in txt_list:
         continue
 
     dataset = my_dataset(file)
-    data_loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False, pin_memory=True, num_workers=1,
-                                              drop_last=False, collate_fn=BERT_tokenizer)  # convert text into matrix
+    data_loader = torch.utils.data.DataLoader(query, batch_size=1, shuffle=False, pin_memory=True, num_workers=1,
+                                              drop_last=False, collate_fn=BERT_tokenizer)
 
     file_embedding = []
 
@@ -151,17 +159,21 @@ order = 0
 
 for txt in result_list:
     order = order + 1
+
     result = txt.split("_")
+
+    filename = "_".join(result[0:2])
+    sentence = ""
+
     result[0] = result[0] + ".txt" # result[0] = file name
     result[1] = result[1].replace(".txt", "")
     result[1] = result[1].replace("pg", "Page ") # result[1] = page number
     result[-1] = result[-1].replace("sentence", "") # result[-1] = sentence number
     num = int(result[-1])
+    with open(f"/home/marie/Downloads/sample_txt_pgs_clean/{filename}", 'r') as f:
+        sentence_list = f.readlines()
+        sentence = sentence_list[num-1]
 
-    file = txt.split("_sentence")
-    file = file[0]
-    dataset = my_dataset(f"/home/marie/Downloads/sample_txt_pgs/{file}")
-
-    display = np.append(display, np.array([[f"{order}", result[0], result[1], f"'{dataset[num - 1]}'"]]), axis=0) # append results
+    display = np.append(display, np.array([[f"{order}", result[0], result[1], sentence]]), axis=0) # append results
 
 print(tabulate(display, headers=["Result", "File", "Page", "Text"])) # print with headers
