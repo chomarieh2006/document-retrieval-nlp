@@ -20,10 +20,20 @@ def clean_text(filename):
             if has_noun < 1 and has_verb < 1:
                 sentence_list.append(sent.text)
 
-    for i in range(0, len(sentence_list)):
-        sentence_list[i] = re.sub("\n", "", sentence_list[i])
 
+    for i in range(0, len(sentence_list)):
+        sentence_list[i] = sentence_list[i].strip()
+        sentence_list[i] = re.sub("@\S+", "", sentence_list[i])
+        sentence_list[i] = re.sub("#", "", sentence_list[i])
+        sentence_list[i] = re.sub("\n", "", sentence_list[i])
+        sentence_list[i] = re.sub("-", "", sentence_list[i])
+        sentence_list[i] = re.sub("[\(\[].*?[\)\]]", "", sentence_list[i])
+        if sentence_list[i].find(' ') == -1:
+            sentence_list[i] = None
+
+    sentence_list = [i for i in sentence_list if i]
     return sentence_list
 
-
-print(clean_text("/home/marie/Downloads/sample_txt/Ahuja.txt"))
+x = clean_text("/home/marie/Downloads/sample_txt/WestbyDawson1995.txt")
+for i in x:
+    print(i)
