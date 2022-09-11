@@ -59,6 +59,10 @@ The following are the results for the document retrieval speed up process.
 
 ![Base Wait Times](base_times.png | width=100)
 
+![Base Wait Times](base_times.png | width=100)
+
+![](base_times.png =250x250)
+
 ![k-Means Wait Times](kmeans_times.png | width=100)
 
 ![k-Means error](kmeans_err.png | width=100)
