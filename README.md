@@ -57,15 +57,7 @@ By default, each time you run the program, it will extract text and generate emb
 
 The following are the results for the document retrieval speed up process.
 
-![Base Wait Times](base_times.png | width=100)
-
-![Base Wait Times](base_times.png | width=100)
-
-![](base_times.png =250x250)
-
-![k-Means Wait Times](kmeans_times.png | width=100)
-
-![k-Means error](kmeans_err.png | width=100)
+<img src="base_times.png" width=50% height=50%>
 
 ## Future Work Ideas
 
