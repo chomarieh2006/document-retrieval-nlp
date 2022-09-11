@@ -5,6 +5,22 @@ A search engine to look for certain files from the user.
 Using machine learning and PyTorch to develop a model that can utilize NLP to search for and return relevant texts and images to the user's query.
 Employs semantic embedding (for meaning rather than word frequency) and convolutional neural networks to retrieve data.
 
+## Result Highlights
+
+[Research Paper](Accelerating_k_Nearest_Neighbor_Search_with_Cosine_Similarity.pdf)
+
+The following are the results for the document retrieval speed up process.
+
+| <img src="base_times.png" width=89% height=89%> | <img src="kmeans_times.png" width=75% height=75%>  |
+| ------------- | ------------- |
+| Wait times for a search with no optimization:17 seconds to load/prepare and about 7 seconds to calculate the top 5 nearest neighbor vectors. While 7 seconds is considerably fast and the base mode is the 100% accurate, times will get  slower as the system is exposed to more data.  | With acceleration through k-means clustering, query times have decreased as the number of centroids increased. Ideally, at some point the time will be essentially 0. However,there is a limit (in this case about 2 seconds) to the acceleration, due to a constant factor that cannot be reduced. Despite this, the overall wait time is reduced significantly.|
+
+ 
+| <img src="kmeans_load.png" width=120% height=120%> |  <img src="kmeans_err.png" width=70% height=70%>  |
+| ------------- | ------------- |
+| However, optimization through k-means clustering comes as a trade-off with loading times. As the number of centroids increases, the loading times increase with it. In this case, as k increases from 1 to 32, the loading time increases from 25 seconds to 125 seconds.  | The accuracy of the search  can also waver due to possible chances of excluding potential nearest vectors not in the nearest k-cluster. Because errors occur by chance, numbers will fluctuate but are expected to increase as the number of clusters increase. Searches with fewer clusters have less errors than those with more. Still, the percentage of error are less than 1%.|
+
+
 ## Abstract
 Modern devices allow users to search for certain files, but solely utilize the names of the files, instead of the contents stored within. As humanity progresses technologically, the increasing amounts of data will serve as a barrier to a practical application of the latter task in terms of time and cost. This will necessitate accurate methods for finding information in a timely and effective manner. In this work, we create a system to search for relevant content within texts and images in respect to a user’s queries utilizing NLP that is both productive and accurate when tested on over 300,000 sources of data.
 
@@ -52,12 +68,6 @@ Then run `doc_retrieval.py`, which uses the following arguments:
 - `--mode`: enable/disable optimization (default: base,0 - if you would like to enable optimization, use kmeans,4)
 
 By default, each time you run the program, it will extract text and generate embeddings for any new sources (which will include everything when running this program for the first time). This may take a significant amount of time for large datasets.
-
-## Results
-
-The following are the results for the document retrieval speed up process.
-
-<img src="base_times.png" width=22% height=22%> <img src="kmeans_load.png" width=22% height=22%> <img src="kmeans_times.png" width=22% height=22%> <img src="kmeans_err.png" width=22% height=22%>
 
 ## Future Work Ideas
 
