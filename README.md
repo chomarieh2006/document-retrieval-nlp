@@ -58,6 +58,8 @@ By default, each time you run the program, it will extract text and generate emb
 The following are the results for the document retrieval speed up process.
 
 <img src="base_times.png" width=50% height=50%>
+<img src="kmeans_times.png" width=50% height=50%>
+<img src="kmeans_err.png" width=50% height=50%>
 
 ## Future Work Ideas
 
