@@ -7,7 +7,7 @@ Employs semantic embedding (for meaning rather than word frequency) and convolut
 
 ## Result Highlights
 
-### [Research Paper](Accelerating_k_Nearest_Neighbor_Search_with_Cosine_Similarity.pdf)
+### [Research Paper](Accelerating_Document_Retrieval_with_k_Means_Clustering.pdf)
 
 The following are the results for the document retrieval acceleration process.
 
