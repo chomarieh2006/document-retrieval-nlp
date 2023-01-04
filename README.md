@@ -65,7 +65,7 @@ Then run `doc_retrieval.py`, which uses the following arguments:
 - `--noscan`: disable scanning for new files in source directory to extract text and generate embeddings for, which is done by default (default: False)
 - `--mode`: enable/disable optimization (default: base,0 - if you would like to enable optimization, use kmeans,4)
 
-By default, each time you run the program, it will extract text and generate embeddings for any new sources (which will include everything when running this program for the first time). This may take a significant amount of time for large datasets.
+By default, each time you run the program, it will extract text and generate embeddings for any new sources (which will include everything when running this program for the first time). This may take a significant amount of time for large datasets. 
 
 ## Future Work Ideas
 
